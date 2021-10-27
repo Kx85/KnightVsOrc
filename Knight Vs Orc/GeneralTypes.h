@@ -4,6 +4,8 @@
 
 namespace GeneralTypes {
 
+enum ViewList {Menu, Fight};
+
 // X-MACRO to generate an enum which can be printed as a string (operator overload)
 // Following is like defining  "enum Class {Char, Knight, Orc};"
 #define CLASS   \
@@ -67,19 +69,19 @@ X(Axe)
         0
     };
 
-    inline std::ostream& operator<<(std::ostream& os, enum Class c)
+    inline std::ostream& operator<<(std::ostream& os, enum GeneralTypes::Class c)
     {
         if (c >= ClassCount || c < 0) return os << "???";
         return os << class_str[c];
     }
 
-    inline std::ostream& operator<<(std::ostream& os, enum Status s)
+    inline std::ostream& operator<<(std::ostream& os, enum GeneralTypes::Status s)
     {
         if (s >= StatusCount || s < 0) return os << "???";
         return os << status_str[s];
     }
 
-    inline std::ostream& operator<<(std::ostream& os, enum WeaponType wt)
+    inline std::ostream& operator<<(std::ostream& os, enum GeneralTypes::WeaponType wt)
     {
         if (wt >= WeaponTypeCount || wt < 0) return os << "???";
         return os << weaponType_str[wt];
