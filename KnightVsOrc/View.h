@@ -1,29 +1,28 @@
 #pragma once
 #include <string>
+#include <map>
 #include "GeneralTypes.h"
 class View
 {
 public:
 	View();
-	View(GeneralTypes::ViewList& context);
+	View(GeneralTypes::ViewList context);
 	View(const View& v);
 
-	void render();
+	void render(const std::string toDisplay);
+	void clearScreen();
 
-	void setContext(const GeneralTypes::ViewList& context);
+	void setContext(const GeneralTypes::ViewList context);
+	const GeneralTypes::ViewList getContext();
 	View& operator=(View& v);
-
-	void toggleChoice();
 
 protected:
 	int width = 100;
 	int height = 23;
+	int choice = 0;
 
 private:
-	void renderMenu();
 
 	GeneralTypes::ViewList context;
-	int choice = 1;
+	std::map<GeneralTypes::ViewList, View> viewMap;
 };
-
-

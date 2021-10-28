@@ -4,7 +4,7 @@
 
 namespace GeneralTypes {
 
-enum ViewList {Menu, Fight};
+enum ViewList {TitleScreen, Demo, DemoExitConfirmBox, Fight};
 
 // X-MACRO to generate an enum which can be printed as a string (operator overload)
 // Following is like defining  "enum Class {Char, Knight, Orc};"
