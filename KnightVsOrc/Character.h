@@ -1,6 +1,9 @@
 #pragma once
-#include "GeneralTypes.h"
 #include <string>
+#include <vector>
+#include "Weapon.h"
+#include "GeneralTypes.h"
+#include "Abilities.h"
 
 
 class Character
@@ -8,7 +11,7 @@ class Character
 public:
 	Character();
 	Character(const Character &c);
-	Character(const GeneralTypes::Class type, const std::string name, const int shieldValue, const int health, const int team);
+	Character(const GeneralTypes::Class type, const std::string name, const Weapon& weapon, const int shieldValue, const int health, const int team);
 	~Character();
 
 	const GeneralTypes::Class getType();
@@ -24,26 +27,45 @@ public:
 	void setShield(const int v);
 
 	const GeneralTypes::Status getStatus();
-	void applyStatus(const GeneralTypes::Status& s);
+	void applyStatus(const GeneralTypes::Status& s, const int duration);
 
 	const int getMaxHealth();
-	void setMaxHealth(const int& maxHealth);
+	void setMaxHealth(const int maxHealth);
+
+	const int getMaxShield();
+	void setMaxShield(const int maxShield); 
+
+	const bool canAct();
+
+	const Weapon& getWeapon();
+	void setWeapon(const Weapon& weapon);
+
+	const Abilities& getAbility();
+	void addAbility(Abilities* ability);
+
+	void dcrCooldown();
 
 	const int getHealth();
 	void setHealth(const int health);
 	void takeDamage(const int amount);
 	void heal(const int amount);
 
-	void toString();
+	void reset();
+
+	const std::string toString();
 
 private:
 	GeneralTypes::Class type;
 	std::string name;
 	bool player;
 	int shieldValue;
+	int maxShield;
 	GeneralTypes::Status status;
 	int health;
 	int maxHealth;
 	int team;
+	Weapon weapon;
+	Abilities abilitiesList;
+	int statusDuration;
 };
 

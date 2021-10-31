@@ -3,8 +3,10 @@
 #include <stdio.h>
 
 #include "TitleScreen.h"
+#include "Demo.h"
 #include "DemoExitConfirmBox.h"
 #include "View.h"
+#include "Fight.h"
 class Game
 {
 public:
@@ -35,5 +37,7 @@ private:
 	short lastKey;
 	TitleScreen ts = TitleScreen();
 	DemoExitConfirmBox demoExit = DemoExitConfirmBox();
+	Demo demo = Demo();
+	Fight fight = Fight();
 };
 

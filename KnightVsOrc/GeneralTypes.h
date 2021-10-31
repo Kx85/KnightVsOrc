@@ -5,6 +5,7 @@
 namespace GeneralTypes {
 
 enum ViewList {TitleScreen, Demo, DemoExitConfirmBox, Fight};
+enum ModifierType { Add, Mult, PercentInc};
 
 // X-MACRO to generate an enum which can be printed as a string (operator overload)
 // Following is like defining  "enum Class {Char, Knight, Orc};"
@@ -32,7 +33,7 @@ X(Orc)
 // Following is like defining  "enum Status { NoStatus, stun };"
 #define STATUS \
 X(NoStatus)    \
-X(stunned)
+X(Stunned)
 
     enum Status {
 #   define X(a) a,

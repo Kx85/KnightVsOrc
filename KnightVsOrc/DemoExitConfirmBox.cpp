@@ -31,7 +31,7 @@ void DemoExitConfirmBox::updateDemoDisplay()
 	if (choice == 0)
 		demoExitConfirmBox.at(6).replace(demoExitConfirmBox.at(6).find('[') + 1, 1, "X");
 	else
-	demoExitConfirmBox.at(6).replace(demoExitConfirmBox.at(6).find('[', found + 1) + 1, 1, "X");
+		demoExitConfirmBox.at(6).replace(demoExitConfirmBox.at(6).find('[', found + 1) + 1, 1, "X");
 }
 
 void DemoExitConfirmBox::resetDemoSelection()

@@ -13,10 +13,6 @@ using namespace std;
 
 int main()
 {
-    //Defining the knight character and its weapon
-    Character knight = Character::Character(GeneralTypes::Class::Knight, "Knight", 50, 20, 1);
-    Character orc = Character::Character(GeneralTypes::Class::Orc, "Knight", 0, 80, 1);
-
     View v = View::View();
     Game g = Game(v);
 

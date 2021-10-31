@@ -37,7 +37,6 @@ void TitleScreen::resetTitleScreenSelection() {
 void TitleScreen::updateTitleScreenDisplay()
 {
 	int index = choice + titleSize;
-	std::cout << "Je modifie l'index=" << index << std::endl;
 	titleScreen.at(index).replace(titleScreen.at(index).find('[') + 1, 1, "X");
 }
 

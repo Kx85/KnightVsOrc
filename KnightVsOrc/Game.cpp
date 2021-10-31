@@ -41,9 +41,6 @@ View& Game::getView()
 
 void Game::start()
 {
-
-
-
 	this->update();
 
 	DWORD cNumRead, fdwMode, i;
@@ -51,7 +48,6 @@ void Game::start()
 	int counter = 0;
 
 	// Get the standard input handle.
-
 	hStdin = GetStdHandle(STD_INPUT_HANDLE);
 	if (hStdin == INVALID_HANDLE_VALUE)
 		ErrorExit("GetStdHandle");
@@ -61,11 +57,9 @@ void Game::start()
 		ErrorExit("GetConsoleMode");
 
 	// Enable the window and mouse input events.
-
 	fdwMode = ENABLE_WINDOW_INPUT;
 	if (!SetConsoleMode(hStdin, fdwMode))
 		ErrorExit("SetConsoleMode");
-
 
 
 	bool notOver = true;
@@ -116,7 +110,6 @@ void Game::start()
 				break;
 			}
 			
-			processKey();
 			this->update();
 		}
 
@@ -128,10 +121,12 @@ void Game::processKeyDemoExitConfirmBox() {
 	case VK_RETURN:
 		if (demoExit.getChoice() == 0) {
 			v.setContext(GeneralTypes::ViewList::TitleScreen);
-			std::cout << "Changing view" << std::endl;
+			std::cout << "Changing view to TitleScreen" << std::endl;
 		}
 		else if (demoExit.getChoice() == 1) {
 			v.setContext(GeneralTypes::ViewList::Demo);
+			demo.start(&fight);
+			std::cout << "Changing view to Demo from confirm box" << std::endl;
 		}
 		break;
 	case VK_RIGHT:
@@ -150,6 +145,7 @@ void Game::processKeyTitleScreen() {
 		}
 		else if (ts.getChoice() == 1) {
 			v.setContext(GeneralTypes::ViewList::Demo);
+			demo.start(&fight);
 			std::cout << "Changing view to Demo" << std::endl;
 		}
 		break;
@@ -162,8 +158,9 @@ void Game::processKeyTitleScreen() {
 
 void Game::processKeyDemo()
 {
-	if (lastKey != 0)
+	if (lastKey != 0) {
 		v.setContext(GeneralTypes::ViewList::DemoExitConfirmBox);
+	}
 }
 
 
@@ -190,7 +187,7 @@ void Game::update()
 		v.render(ts.getTextToDisplay());
 		break;
 	case GeneralTypes::ViewList::Demo:
-		v.clearScreen();
+		v.render(demo.getTextToDisplay(&fight));
 		break;
 	case GeneralTypes::ViewList::DemoExitConfirmBox:
 		v.render(demoExit.getTextToDisplay());
