@@ -3,6 +3,7 @@ Weapon::Weapon() {
 	this->name = " ";
 	this->wtype = GeneralTypes::WeaponType::Fist;
 	this->damage = 0;
+	this->speed = 0;
 }
 
 Weapon::Weapon(const std::string& name, const GeneralTypes::WeaponType& wtype, const int& damage)
@@ -10,6 +11,14 @@ Weapon::Weapon(const std::string& name, const GeneralTypes::WeaponType& wtype, c
 	this->name = name;
 	this->wtype = wtype;
 	this->damage = damage;
+	switch (wtype) {
+	case GeneralTypes::WeaponType::Sword:
+		this->speed = 60;
+		break;
+	case GeneralTypes::WeaponType::Axe:
+		this->speed = 40;
+		break;
+	}
 }
 
 Weapon::~Weapon()
@@ -44,4 +53,9 @@ const int Weapon::getDamage()
 void Weapon::setDamage(const int damage)
 {
 	this->damage = damage;
+}
+
+const int Weapon::getSpeed()
+{
+	return this->speed;
 }

@@ -37,10 +37,10 @@ public:
 
 	const bool canAct();
 
-	const Weapon& getWeapon();
-	void setWeapon(const Weapon& weapon);
+	Weapon& getWeapon();
+	void setWeapon(Weapon* weapon);
 
-	const Abilities& getAbility();
+	Abilities& getAbility();
 	void addAbility(Abilities* ability);
 
 	void dcrCooldown();

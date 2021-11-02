@@ -5,7 +5,7 @@
 #include "Abilities.h"
 
 Character::Character() {
-	this->type = GeneralTypes::Class::Char;
+	this->type = GeneralTypes::Class::Custom;
 	this->name = " ";
 	this->player = false;
 	this->shieldValue = 0;
@@ -101,6 +101,7 @@ void Character::applyStatus(const GeneralTypes::Status& s, const int duration)
 {
 	this->status = s;
 	this->statusDuration = duration;
+	std::cout << "applyStatus: " << std::to_string(statusDuration) << std::endl;
 }
 
 const int Character::getMaxHealth()
@@ -146,24 +147,23 @@ const bool Character::canAct()
 	return act;
 }
 
-const Weapon& Character::getWeapon()
+Weapon& Character::getWeapon()
 {
 	return this->weapon;
 }
 
-void Character::setWeapon(const Weapon& weapon)
+void Character::setWeapon(Weapon* weapon)
 {
-	this->weapon = weapon;
+	this->weapon = *weapon;
 }
 
-const Abilities& Character::getAbility()
+Abilities& Character::getAbility()
 {
 	return this->abilitiesList;
 }
 
 void Character::addAbility(Abilities* ability)
 {
-	Abilities* a = ability;
 	this->abilitiesList = *ability;
 }
 

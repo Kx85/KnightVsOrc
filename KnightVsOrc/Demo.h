@@ -13,15 +13,7 @@ public:
 	const std::string getTextToDisplay(Fight* f);
 	void init();
 
-	const bool hasStarted();
-	const bool isUpdated();
-
 	void start(Fight* f);
-	void update();
-	void pauseDemo();
-	void resumeDemo();
-	void endDemo();
-
 
 private:
 	std::vector<Character> players;

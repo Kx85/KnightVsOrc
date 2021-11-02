@@ -43,9 +43,6 @@ Demo::Demo()
 	this->players.push_back(c2);
 }
 
-void Demo::init() {
-}
-
 const std::string Demo::getTextToDisplay(Fight* fight)
 {
 	return fight->displayRound();
@@ -53,7 +50,6 @@ const std::string Demo::getTextToDisplay(Fight* fight)
 
 void Demo::start(Fight* fight)
 {
-	this->init();
 	fight->clear();
 	for (int i = 0; i < this->players.size(); i++) {
 		fight->addPlayer(this->players.at(i));

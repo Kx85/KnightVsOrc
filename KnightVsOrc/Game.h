@@ -4,9 +4,11 @@
 
 #include "TitleScreen.h"
 #include "Demo.h"
-#include "DemoExitConfirmBox.h"
+#include "ExitConfirmBox.h"
 #include "View.h"
 #include "Fight.h"
+#include "FightBeginScreen.h"
+#include "CreateCustomFight.h"
 class Game
 {
 public:
@@ -20,24 +22,30 @@ public:
 	void start();
 	void update();
 
-	void setLastKey(const short& key);
-	const short getLastKey();
+	void setLastKey(const KEY_EVENT_RECORD& key);
+	const KEY_EVENT_RECORD getLastKey();
 
-	void processKeyTitleScreen();
-	void processKeyDemo();
-	void processKeyDemoExitConfirmBox();
-	void processKey();
 
 	void ErrorExit(const char*);
 	void KeyEventProc(KEY_EVENT_RECORD);
 	void ResizeEventProc(WINDOW_BUFFER_SIZE_RECORD);
 
 private:
+	void processKeyTitleScreen();
+	void processKeyDemo();
+	void processKeyDemoExitConfirmBox();
+	void processKeyCreateCustomFight();
+	void processKeyFight();
+	void processKeyFightConfirmBox();
+
 	View v;
-	short lastKey;
+	KEY_EVENT_RECORD lastKey;
+	bool refresh;
 	TitleScreen ts = TitleScreen();
-	DemoExitConfirmBox demoExit = DemoExitConfirmBox();
+	ExitConfirmBox exitBox = ExitConfirmBox();
 	Demo demo = Demo();
 	Fight fight = Fight();
+	FightBeginScreen fbegin = FightBeginScreen();
+	CreateCustomFight customFight = CreateCustomFight();
 };
 

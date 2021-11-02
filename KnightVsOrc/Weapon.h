@@ -17,10 +17,12 @@ public:
 	const int getDamage();
 	void setDamage(const int damage);
 
+	const int getSpeed();
+
 private:
 	std::string name;
 	GeneralTypes::WeaponType wtype;
 	int damage;
-
+	int speed;
 };
 

@@ -4,13 +4,13 @@
 
 namespace GeneralTypes {
 
-enum ViewList {TitleScreen, Demo, DemoExitConfirmBox, Fight};
+enum ViewList {TitleScreen, Demo, DemoExitConfirmBox, Fight, CreateCustomFight, FightConfirmBox};
 enum ModifierType { Add, Mult, PercentInc};
 
 // X-MACRO to generate an enum which can be printed as a string (operator overload)
 // Following is like defining  "enum Class {Char, Knight, Orc};"
 #define CLASS   \
-X(Char)         \
+X(Custom)       \
 X(Knight)       \
 X(Orc)
 
@@ -74,6 +74,10 @@ X(Axe)
     {
         if (c >= ClassCount || c < 0) return os << "???";
         return os << class_str[c];
+    }
+
+    inline bool operator==(std::string s, enum GeneralTypes::Class c) {
+        return (s == class_str[c]);
     }
 
     inline std::ostream& operator<<(std::ostream& os, enum GeneralTypes::Status s)

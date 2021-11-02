@@ -147,9 +147,11 @@
   <ItemGroup>
     <ClCompile Include="Abilities.cpp" />
     <ClCompile Include="Character.cpp" />
+    <ClCompile Include="CreateCustomFight.cpp" />
     <ClCompile Include="Demo.cpp" />
-    <ClCompile Include="DemoExitConfirmBox.cpp" />
+    <ClCompile Include="ExitConfirmBox.cpp" />
     <ClCompile Include="Fight.cpp" />
+    <ClCompile Include="FightBeginScreen.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GeneralTypes.cpp" />
     <ClCompile Include="KnightVsOrc.cpp" />
@@ -160,9 +162,11 @@
   <ItemGroup>
     <ClInclude Include="Abilities.h" />
     <ClInclude Include="Character.h" />
+    <ClInclude Include="CreateCustomFight.h" />
     <ClInclude Include="Demo.h" />
-    <ClInclude Include="DemoExitConfirmBox.h" />
+    <ClInclude Include="ExitConfirmBox.h" />
     <ClInclude Include="Fight.h" />
+    <ClInclude Include="FightBeginScreen.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GeneralTypes.h" />
     <ClInclude Include="TitleScreen.h" />

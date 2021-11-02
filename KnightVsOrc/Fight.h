@@ -16,6 +16,7 @@ public:
 	void start();
 
 	void addPlayer(Character& c);
+	Character* getPlayer(const int index);
 	const bool hasEnded();
 
 	void playDemoRound();
@@ -23,10 +24,11 @@ public:
 	std::string displayRound();
 
 private:
+	std::string processAttackAndGetResult(Character* c1, Character* c2, const bool canEnd);
+
 	std::vector<Character> players;
 	std::vector<std::string> roundHistory;
 	int currentRound;
 	bool matchOver;
-
 };
 

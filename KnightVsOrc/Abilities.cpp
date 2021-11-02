@@ -93,7 +93,8 @@ const int Abilities::getEffectDuration()
 
 void Abilities::dcrCooldown()
 {
-	this->cooldown = (this->cooldown - 1) % this->baseCooldown;
+	if (this->cooldown-- == 0)
+		this->cooldown = this->baseCooldown;
 }
 
 void Abilities::reset()

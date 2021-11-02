@@ -5,7 +5,7 @@
 #include "Game.h"
 #include "View.h"
 #include "TitleScreen.h"
-#include "DemoExitConfirmBox.h"
+#include "ExitConfirmBox.h"
 
 HANDLE hStdin;
 DWORD fdwSaveOldMode;
@@ -15,13 +15,15 @@ Game::Game()
 	
 	View v = View::View();
 	(this->v).operator=(v);
-	this->lastKey = 0;
+	this->lastKey = KEY_EVENT_RECORD();
+	this->refresh = true;
 }
 
 Game::Game(View& v)
 {
 	(this->v).operator=(v);
-	this->lastKey = 0;
+	this->lastKey = KEY_EVENT_RECORD();
+	this->refresh = true;
 }
 
 Game::~Game()
@@ -108,6 +110,15 @@ void Game::start()
 			case GeneralTypes::ViewList::Demo:
 				processKeyDemo();
 				break;
+			case GeneralTypes::ViewList::CreateCustomFight:
+				processKeyCreateCustomFight();
+				break;
+			case GeneralTypes::ViewList::Fight:
+				processKeyFight();
+				break;
+			case GeneralTypes::ViewList::FightConfirmBox:
+				processKeyFightConfirmBox();
+				break;
 			}
 			
 			this->update();
@@ -116,14 +127,73 @@ void Game::start()
 	}
 }
 
-void Game::processKeyDemoExitConfirmBox() {
-	switch (lastKey) {
+
+void Game::processKeyFightConfirmBox() {
+	switch (lastKey.wVirtualKeyCode) {
 	case VK_RETURN:
-		if (demoExit.getChoice() == 0) {
+		if (exitBox.getChoice() == 0) {
 			v.setContext(GeneralTypes::ViewList::TitleScreen);
 			std::cout << "Changing view to TitleScreen" << std::endl;
 		}
-		else if (demoExit.getChoice() == 1) {
+		else if (exitBox.getChoice() == 1) {
+			v.setContext(GeneralTypes::ViewList::Fight);
+			customFight.start(&fight);
+		}
+	case VK_RIGHT:
+	case VK_LEFT:
+		exitBox.toggleChoice();
+		break;
+	}
+}
+
+void Game::processKeyFight() {
+	if (lastKey.bKeyDown)
+		v.setContext(GeneralTypes::ViewList::FightConfirmBox);
+}
+
+void Game::processKeyCreateCustomFight() {
+	switch (lastKey.wVirtualKeyCode) {
+	case VK_RETURN:
+		if (customFight.hasMore()) {
+			customFight.nextMenu();
+		}
+		if (!customFight.hasMore()) {
+			customFight.validate();
+		}
+		if (customFight.isReady()) {
+			customFight.start(&fight);
+			v.setContext(GeneralTypes::ViewList::Fight);
+		}
+		break;
+	case VK_BACK:
+		if (customFight.getSelector() >= 0) {
+			customFight.removeChar();
+		}
+		if (customFight.getSelector() < 0) {
+			if (customFight.hasSavedChar())
+				customFight.loadPlayer();
+			else
+				v.setContext(GeneralTypes::ViewList::TitleScreen);
+		}
+		break;
+	case VK_SHIFT:
+	case VK_RSHIFT:
+			break;
+	default:
+		if (lastKey.bKeyDown)
+			customFight.addChar(lastKey.uChar.AsciiChar);
+		break;
+	}
+}
+
+void Game::processKeyDemoExitConfirmBox() {
+	switch (lastKey.wVirtualKeyCode) {
+	case VK_RETURN:
+		if (exitBox.getChoice() == 0) {
+			v.setContext(GeneralTypes::ViewList::TitleScreen);
+			std::cout << "Changing view to TitleScreen" << std::endl;
+		}
+		else if (exitBox.getChoice() == 1) {
 			v.setContext(GeneralTypes::ViewList::Demo);
 			demo.start(&fight);
 			std::cout << "Changing view to Demo from confirm box" << std::endl;
@@ -131,17 +201,18 @@ void Game::processKeyDemoExitConfirmBox() {
 		break;
 	case VK_RIGHT:
 	case VK_LEFT:
-		demoExit.toggleChoice();
+		exitBox.toggleChoice();
 		break;
 	}
 }
 
 void Game::processKeyTitleScreen() {
-	switch (lastKey) {
+	switch (lastKey.wVirtualKeyCode) {
 	case VK_RETURN:
 		if (ts.getChoice() == 0) {
-			v.setContext(GeneralTypes::ViewList::Fight);
-			std::cout << "Changing view to Fight" << std::endl;
+			v.setContext(GeneralTypes::ViewList::CreateCustomFight);
+			customFight.reset();
+			std::cout << "Changing view to CreateCustomFight" << std::endl;
 		}
 		else if (ts.getChoice() == 1) {
 			v.setContext(GeneralTypes::ViewList::Demo);
@@ -158,52 +229,51 @@ void Game::processKeyTitleScreen() {
 
 void Game::processKeyDemo()
 {
-	if (lastKey != 0) {
+	if (lastKey.bKeyDown)
 		v.setContext(GeneralTypes::ViewList::DemoExitConfirmBox);
-	}
-}
-
-
-void Game::processKey()
-{
-	switch (lastKey) {
-	case VK_RETURN:
-		//v.setContext(GeneralTypes::ViewList::Fight);
-		//std::cout << "Changing view" << std::endl;
-
-		break;
-	case VK_DOWN:
-
-		break;
-	}
-
 }
 
 void Game::update()
 {
+	if (!this->refresh) return;
+
 	GeneralTypes::ViewList vlist = v.getContext();
 	switch (vlist) {
 	case GeneralTypes::ViewList::TitleScreen:
 		v.render(ts.getTextToDisplay());
 		break;
 	case GeneralTypes::ViewList::Demo:
+		v.render(fbegin.getTextToDisplay(&fight));
+		Sleep(3000);
 		v.render(demo.getTextToDisplay(&fight));
 		break;
 	case GeneralTypes::ViewList::DemoExitConfirmBox:
-		v.render(demoExit.getTextToDisplay());
+		v.render(exitBox.getTextToDisplay());
+		break;
+	case GeneralTypes::ViewList::CreateCustomFight:
+		v.render(customFight.getTextToDisplay());
+		break;
+	case GeneralTypes::ViewList::Fight:
+		v.render(fbegin.getTextToDisplay(&fight));
+		Sleep(3000);
+		v.render(customFight.getTextToDisplay(&fight));
+		break;
+	case GeneralTypes::ViewList::FightConfirmBox:
+		v.render(exitBox.getTextToDisplay());
 		break;
 	default:
 		v.render(" ");
 		break;
 	}
+	this->refresh = false;
 }
 
-void Game::setLastKey(const short& key)
+void Game::setLastKey(const KEY_EVENT_RECORD& key)
 {
 	this->lastKey = key;
 }
 
-const short Game::getLastKey()
+const KEY_EVENT_RECORD Game::getLastKey()
 {
 	return this->lastKey;
 }
@@ -211,11 +281,12 @@ const short Game::getLastKey()
 void Game::KeyEventProc(KEY_EVENT_RECORD ker)
 {
 	
-	if (ker.bKeyDown && ker.wVirtualKeyCode != this->getLastKey()) {
-		this->setLastKey(ker.wVirtualKeyCode);
+	if (ker.bKeyDown && ker.wVirtualKeyCode != this->getLastKey().wVirtualKeyCode) {
+		this->setLastKey(ker);
+		this->refresh = true;
 	}
 	else if (!ker.bKeyDown) {
-		this->setLastKey(0);
+		this->setLastKey(KEY_EVENT_RECORD());
 	}
 }
 
