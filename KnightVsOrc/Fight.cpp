@@ -44,7 +44,7 @@ void Fight::start()
 		addHistory(this->getPlayer(1)->getName() + " is faster and will start first\n\n");
 	}
 	else {
-		addHistory("Fighters are as fast as each others but default will be on player 1");
+		addHistory("Fighters are as fast as each others but default will be on player 1\n\n");
 	}
 }
 
