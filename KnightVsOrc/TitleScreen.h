@@ -7,7 +7,8 @@ class TitleScreen
 public:
 	const std::string getTextToDisplay();
 
-	void toggleChoice();
+	void toggleDownChoice();
+	void toggleUpChoice();
 	const int getChoice();
 
 private:
@@ -24,11 +25,12 @@ private:
 		 R"(                          __/ |                                                          )",
 		 R"(                         |___/                                                           )",
 		 R"(                [ ]  PRESS START)",
-		 R"(                [ ]     DEMO)"
+		 R"(                [ ]     DEMO)",
+		 R"(                [ ]     CREATE)"
 	};
 
 	const int choiceOffset = 16;
-	const int menuChoice = 2;
+	int menuChoice = 3;
 	const int menuChoiceOffset = 3;
 	const int titleSize = 8;
 	int choice = 0;

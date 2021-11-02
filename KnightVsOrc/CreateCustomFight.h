@@ -15,6 +15,14 @@ public:
 	std::string getTextToDisplay();
 	std::string getTextToDisplay(Fight* f);
 
+	const int getCharactersSize();
+	const int getWeaponsSize();
+	const int getAbilitiesSize();
+
+	std::vector<Abilities>* getAbilities();
+	std::vector<Weapon>* getWeapons();
+	std::vector<Character>* getCharacters();
+
 	void addChar(const char c);
 	void removeChar();
 	void nextMenu();

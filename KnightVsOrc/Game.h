@@ -9,6 +9,8 @@
 #include "Fight.h"
 #include "FightBeginScreen.h"
 #include "CreateCustomFight.h"
+#include "CreationMode.h"
+#include "CreateWeapon.h"
 class Game
 {
 public:
@@ -37,6 +39,8 @@ private:
 	void processKeyCreateCustomFight();
 	void processKeyFight();
 	void processKeyFightConfirmBox();
+	void processKeyCreationModeWindow();
+	void processKeyCreateWeapon();
 
 	View v;
 	KEY_EVENT_RECORD lastKey;
@@ -47,5 +51,7 @@ private:
 	Fight fight = Fight();
 	FightBeginScreen fbegin = FightBeginScreen();
 	CreateCustomFight customFight = CreateCustomFight();
+	CreationMode cmode = CreationMode();
+	CreateWeapon cweapon = CreateWeapon();
 };
 

@@ -43,6 +43,14 @@ const GeneralTypes::WeaponType Weapon::getWeaponType()
 void Weapon::setWeaponType(const GeneralTypes::WeaponType& wtype)
 {
 	this->wtype = wtype;
+	switch (wtype) {
+	case GeneralTypes::WeaponType::Sword:
+		this->speed = 60;
+		break;
+	case GeneralTypes::WeaponType::Axe:
+		this->speed = 40;
+		break;
+	}
 }
 
 const int Weapon::getDamage()

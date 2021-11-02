@@ -4,7 +4,15 @@
 
 namespace GeneralTypes {
 
-enum ViewList {TitleScreen, Demo, DemoExitConfirmBox, Fight, CreateCustomFight, FightConfirmBox};
+enum ViewList {TitleScreen,
+    Demo,
+    DemoExitConfirmBox,
+    Fight,
+    CreateCustomFight,
+    FightConfirmBox,
+    CreationModeWindow,
+    CreateWeapon
+};
 enum ModifierType { Add, Mult, PercentInc};
 
 // X-MACRO to generate an enum which can be printed as a string (operator overload)

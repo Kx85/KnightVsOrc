@@ -119,6 +119,12 @@ void Game::start()
 			case GeneralTypes::ViewList::FightConfirmBox:
 				processKeyFightConfirmBox();
 				break;
+			case GeneralTypes::ViewList::CreationModeWindow:
+				processKeyCreationModeWindow();
+				break;
+			case GeneralTypes::ViewList::CreateWeapon:
+				processKeyCreateWeapon();
+				break;
 			}
 			
 			this->update();
@@ -127,6 +133,66 @@ void Game::start()
 	}
 }
 
+void Game::processKeyCreateWeapon() {
+	switch (lastKey.wVirtualKeyCode) {
+	case VK_RETURN:
+		if (cweapon.hasMore()) {
+			cweapon.nextMenu(&customFight);
+		}
+		if (!cweapon.hasMore()) {
+			cweapon.validate(&customFight);
+			v.setContext(GeneralTypes::ViewList::CreationModeWindow);
+		}
+		break;
+	case VK_BACK:
+		if (cweapon.getSelector() >= 0) {
+			cweapon.removeChar();
+		}
+		if (cweapon.getSelector() < 0) {
+			v.setContext(GeneralTypes::ViewList::CreationModeWindow);
+		}
+		break;
+	case VK_SHIFT:
+	case VK_RSHIFT:
+		break;
+	default:
+		if (lastKey.bKeyDown)
+			cweapon.addChar(lastKey.uChar.AsciiChar);
+		break;
+	}
+}
+
+void Game::processKeyCreationModeWindow() {
+	switch (lastKey.wVirtualKeyCode) {
+	case VK_RETURN:
+		if (cmode.getChoice() == 0) {
+			v.setContext(GeneralTypes::ViewList::CreateWeapon);
+			cweapon.reset();
+		}
+		else if (cmode.getChoice() == 1) {
+
+		}
+		else if (cmode.getChoice() == 2) {
+
+		}
+		else if (cmode.getChoice() == 3) {
+
+		}
+		else if (cmode.getChoice() == 4) {
+
+		}
+		break;
+	case VK_LEFT:
+		cmode.toggleLeftChoice();
+		break;
+	case VK_RIGHT:
+		cmode.toggleRightChoice();
+		break;
+	case VK_BACK:
+		v.setContext(GeneralTypes::ViewList::TitleScreen);
+		break;
+	}
+}
 
 void Game::processKeyFightConfirmBox() {
 	switch (lastKey.wVirtualKeyCode) {
@@ -219,10 +285,15 @@ void Game::processKeyTitleScreen() {
 			demo.start(&fight);
 			std::cout << "Changing view to Demo" << std::endl;
 		}
+		else if (ts.getChoice() == 2) {
+			v.setContext(GeneralTypes::ViewList::CreationModeWindow);
+		}
 		break;
 	case VK_DOWN:
+		ts.toggleDownChoice();
+		break;
 	case VK_UP:
-		ts.toggleChoice();
+		ts.toggleUpChoice();
 		break;
 	}
 }
@@ -260,6 +331,12 @@ void Game::update()
 		break;
 	case GeneralTypes::ViewList::FightConfirmBox:
 		v.render(exitBox.getTextToDisplay());
+		break;
+	case GeneralTypes::ViewList::CreationModeWindow:
+		v.render(cmode.getTextToDisplay());
+		break;
+	case GeneralTypes::ViewList::CreateWeapon:
+		v.render(cweapon.getTextToDisplay());
 		break;
 	default:
 		v.render(" ");

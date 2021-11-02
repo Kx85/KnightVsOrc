@@ -148,6 +148,8 @@
     <ClCompile Include="Abilities.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="CreateCustomFight.cpp" />
+    <ClCompile Include="CreateWeapon.cpp" />
+    <ClCompile Include="CreationMode.cpp" />
     <ClCompile Include="Demo.cpp" />
     <ClCompile Include="ExitConfirmBox.cpp" />
     <ClCompile Include="Fight.cpp" />
@@ -163,6 +165,8 @@
     <ClInclude Include="Abilities.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="CreateCustomFight.h" />
+    <ClInclude Include="CreateWeapon.h" />
+    <ClInclude Include="CreationMode.h" />
     <ClInclude Include="Demo.h" />
     <ClInclude Include="ExitConfirmBox.h" />
     <ClInclude Include="Fight.h" />

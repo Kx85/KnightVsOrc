@@ -76,6 +76,36 @@ std::string CreateCustomFight::getTextToDisplay(Fight* f)
 	return f->displayRound();
 }
 
+const int CreateCustomFight::getCharactersSize()
+{
+	return this->characters.size();
+}
+
+const int CreateCustomFight::getWeaponsSize()
+{
+	return this->weapons.size();
+}
+
+const int CreateCustomFight::getAbilitiesSize()
+{
+	return this->abilities.size();
+}
+
+std::vector<Abilities>* CreateCustomFight::getAbilities()
+{
+	return &this->abilities;
+}
+
+std::vector<Weapon>* CreateCustomFight::getWeapons()
+{
+	return &this->weapons;
+}
+
+std::vector<Character>* CreateCustomFight::getCharacters()
+{
+	return &this->characters;
+}
+
 void CreateCustomFight::addChar(const char c)
 {
 	this->answer.at(currentSelector).push_back(c);

@@ -40,7 +40,17 @@ void TitleScreen::updateTitleScreenDisplay()
 	titleScreen.at(index).replace(titleScreen.at(index).find('[') + 1, 1, "X");
 }
 
-void TitleScreen::toggleChoice()
+void TitleScreen::toggleUpChoice()
+{
+	if (this->choice == 0) {
+		this->choice = this->menuChoice - 1;
+	}
+	else {
+		this->choice--;
+	}
+}
+
+void TitleScreen::toggleDownChoice()
 {
 	choice = (choice + 1) % menuChoice;
 }
