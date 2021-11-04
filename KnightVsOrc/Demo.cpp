@@ -53,7 +53,7 @@ const std::string Demo::getTextToDisplay(Fight* fight)
 void Demo::start(Fight* fight)
 {
 	fight->clear();
-	for (int i = 0; i < this->players.size(); i++) {
+	for (unsigned int i = 0; i < this->players.size(); i++) {
 		fight->addPlayer(this->players.at(i));
 	}
 	fight->start();

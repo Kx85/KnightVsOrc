@@ -28,7 +28,7 @@ const std::string FightBeginScreen::getTextToDisplay(Fight* f)
 {
 
 	std::string text = "";
-	int i = 0;
+	unsigned int i = 0;
 	for (i = 0; i < this->text.size(); i++) {
 		std::string toUpdate = this->text.at(i);
 		toUpdate = updateWithChar(toUpdate, f, i);

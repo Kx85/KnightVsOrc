@@ -9,8 +9,8 @@ const std::string TitleScreen::getTextToDisplay()
 	updateTitleScreenDisplay();
 
 	std::string text = "";
-	int i = 0;
-	for (i = 0; i < titleSize; i++) {
+	unsigned int i = 0;
+	for (i = 0; i < unsigned int(titleSize); i++) {
 		text = text + "\n" + titleScreen.at(i);
 	}
 
@@ -29,7 +29,7 @@ const std::string TitleScreen::getTextToDisplay()
 }
 
 void TitleScreen::resetTitleScreenSelection() {
-	for (int index = titleSize; index < titleScreen.size(); index++) {
+	for (unsigned int index = titleSize; index < titleScreen.size(); index++) {
 		titleScreen.at(index).replace(titleScreen.at(index).find('[') + 1, 1, " ");
 	}
 }

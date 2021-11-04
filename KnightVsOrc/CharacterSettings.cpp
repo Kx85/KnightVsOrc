@@ -21,7 +21,7 @@ std::string CharacterSettings::getTextToDisplay()
 	switch (this->action) {
 	case Action::Create:
 
-		for (int i = 0; i < this->nameList.size(); i++) {
+		for (unsigned int i = 0; i < this->nameList.size(); i++) {
 			tmpStrings.at(i + 1).replace(found + 5,
 				this->nameList.at(i).size(),
 				this->nameList.at(i));
@@ -32,7 +32,7 @@ std::string CharacterSettings::getTextToDisplay()
 			text = text + "\n" + tmpStrings.at(i);
 		}
 
-		for (int i = this->currentSelector + 1; i <= this->nameList.size(); i++) {
+		for (unsigned int i = this->currentSelector + 1; i <= this->nameList.size(); i++) {
 			text = text + "\n" + tmpStrings.at(i);
 		}
 		

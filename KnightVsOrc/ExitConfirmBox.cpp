@@ -7,7 +7,7 @@ const std::string ExitConfirmBox::getTextToDisplay()
 
 	std::string text = "";
 	int i = 0;
-	for (i = 0; i < exitConfirmBox.size(); i++) {
+	for (unsigned i = 0; i < exitConfirmBox.size(); i++) {
 		text = text + "\n" + exitConfirmBox.at(i);
 	}
 

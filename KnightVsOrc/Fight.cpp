@@ -33,7 +33,7 @@ void Fight::start()
 	this->currentRound = 0;
 	this->roundHistory.clear();
 
-	for (int i = 0; i < this->players.size(); i++) {
+	for (unsigned int i = 0; i < this->players.size(); i++) {
 		this->getPlayer(i)->reset();
 	}
 
@@ -194,7 +194,7 @@ std::string Fight::displayRound()
 {
 	std::string toDisplay = "";
 
-		for (int i = 0; i < roundHistory.size(); i++) {
+		for (unsigned int i = 0; i < roundHistory.size(); i++) {
 			toDisplay = toDisplay + roundHistory.at(i);
 		}
 
