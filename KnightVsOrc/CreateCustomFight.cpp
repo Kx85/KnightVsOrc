@@ -28,8 +28,7 @@ CreateCustomFight::CreateCustomFight()
 
 	this->weapons.push_back(Weapon("Sword", GeneralTypes::WeaponType::Sword, 5));
 	this->weapons.push_back(Weapon("Axe", GeneralTypes::WeaponType::Axe, 8));
-	Character c1 = Character::Character(GeneralTypes::Class::Knight, "Knight",
-		this->weapons.at(0), 50, 20, 1);
+	Character c1 = Character::Character(GeneralTypes::Class::Knight, "Knight", 50, 20, 1);
 	Abilities a1 = Abilities("Charge",
 		GeneralTypes::Status::NoStatus,
 		0,
@@ -38,10 +37,10 @@ CreateCustomFight::CreateCustomFight()
 		3,
 		60,
 		0);
-	c1.addAbility(&a1);
+	c1.setAbility(&a1);
+	c1.setWeapon(&this->weapons.at(0));
 
-	Character c2 = Character::Character(GeneralTypes::Class::Orc, "Orc",
-		this->weapons.at(1), 0, 80, 2);
+	Character c2 = Character::Character(GeneralTypes::Class::Orc, "Orc", 0, 80, 2);
 	Abilities a2 = Abilities("Stun",
 		GeneralTypes::Status::Stunned,
 		0,
@@ -50,7 +49,8 @@ CreateCustomFight::CreateCustomFight()
 		5,
 		20,
 		1);
-	c2.addAbility(&a2);
+	c2.setAbility(&a2);
+	c2.setWeapon(&this->weapons.at(1));
 	this->characters.push_back(c1);
 	this->characters.push_back(c2);
 }
@@ -78,17 +78,17 @@ std::string CreateCustomFight::getTextToDisplay(Fight* f)
 
 const int CreateCustomFight::getCharactersSize()
 {
-	return this->characters.size();
+	return (int)this->characters.size();
 }
 
 const int CreateCustomFight::getWeaponsSize()
 {
-	return this->weapons.size();
+	return (int)this->weapons.size();
 }
 
 const int CreateCustomFight::getAbilitiesSize()
 {
-	return this->abilities.size();
+	return (int)this->abilities.size();
 }
 
 std::vector<Abilities>* CreateCustomFight::getAbilities()
@@ -220,7 +220,7 @@ void CreateCustomFight::validate()
 
 		for (int i = 0; i < this->abilities.size(); i++) {
 			if (this->answer.at(5) == this->abilities.at(i).getName()) {
-				c.addAbility(&this->abilities.at(i));
+				c.setAbility(&this->abilities.at(i));
 			}
 		}
 		break;
@@ -316,7 +316,7 @@ void CreateCustomFight::clear()
 
 	str = "Weapon: (";
 	for (int i = 0; i < this->weapons.size(); i++) {
-		str = str + buildWeaponString(this->weapons.at(i));// this->weapons.at(i).getName() + ", ";
+		str = str + this->weapons.at(i).getName() + " (" + std::to_string(this->weapons.at(i).getDamage()) + " damage), ";
 	}
 	str.pop_back();
 	str.pop_back();

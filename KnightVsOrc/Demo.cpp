@@ -15,8 +15,7 @@ Demo::Demo()
 	this->updateInterval = 1000;
 	this->players.clear();
 
-	Character c1 = Character::Character(GeneralTypes::Class::Knight, "Knight",
-		Weapon("Sword", GeneralTypes::WeaponType::Sword, 5), 50, 20, 1);
+	Character c1 = Character::Character(GeneralTypes::Class::Knight, "Knight", 50, 20, 1);
 	Abilities a1 = Abilities("Charge",
 		GeneralTypes::Status::NoStatus,
 		0,
@@ -25,10 +24,11 @@ Demo::Demo()
 		3,
 		60,
 		0);
-	c1.addAbility(&a1);
+	Weapon w1 = Weapon("Sword", GeneralTypes::WeaponType::Sword, 5);
+	c1.setWeapon(&w1);
+	c1.setAbility(&a1);
 
-	Character c2 = Character::Character(GeneralTypes::Class::Orc, "Orc",
-		Weapon("Axe", GeneralTypes::WeaponType::Axe, 8), 0, 80, 2);
+	Character c2 = Character::Character(GeneralTypes::Class::Orc, "Orc", 0, 80, 2);
 	Abilities a2 = Abilities("Stun",
 		GeneralTypes::Status::Stunned,
 		0,
@@ -37,7 +37,9 @@ Demo::Demo()
 		5,
 		20,
 		1);
-	c2.addAbility(&a2);
+	Weapon w2 = Weapon("Axe", GeneralTypes::WeaponType::Axe, 8);
+	c2.setWeapon(&w2);
+	c2.setAbility(&a2);
 
 	this->players.push_back(c1);
 	this->players.push_back(c2);

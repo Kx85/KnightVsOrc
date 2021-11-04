@@ -10,10 +10,35 @@ enum ViewList {TitleScreen,
     Fight,
     CreateCustomFight,
     FightConfirmBox,
-    CreationModeWindow,
-    CreateWeapon
+    SettingsModeWindow,
+    WeaponSettings,
+    AbilitySettings,
+    CharacterSettings
 };
-enum ModifierType { Add, Mult, PercentInc};
+
+// X-MACRO to generate an enum which can be printed as a string (operator overload)
+// Following is like defining  "enum ModifierType { Add, Mult, PercentInc}"
+#define MODIFIERTYPE   \
+X(Add)                 \
+X(Mult)                \
+X(PercentInc)
+
+
+enum ModifierType {
+#   define X(a) a,
+    MODIFIERTYPE
+#   undef X
+    ModifierTypeCount
+};
+
+char const* const modifierType_str[] = {
+#   define X(a) #a,
+    MODIFIERTYPE
+#   undef X
+    0
+};
+
+
 
 // X-MACRO to generate an enum which can be printed as a string (operator overload)
 // Following is like defining  "enum Class {Char, Knight, Orc};"
@@ -41,7 +66,8 @@ X(Orc)
 // Following is like defining  "enum Status { NoStatus, stun };"
 #define STATUS \
 X(NoStatus)    \
-X(Stunned)
+X(Stunned)     \
+X(Buff)
 
     enum Status {
 #   define X(a) a,
@@ -98,6 +124,12 @@ X(Axe)
     {
         if (wt >= WeaponTypeCount || wt < 0) return os << "???";
         return os << weaponType_str[wt];
+    }
+
+    inline std::ostream& operator<<(std::ostream& os, enum GeneralTypes::ModifierType mt)
+    {
+        if (mt >= ModifierTypeCount || mt < 0) return os << "???";
+        return os << modifierType_str[mt];
     }
 
     inline const char* const BoolToString(bool b)

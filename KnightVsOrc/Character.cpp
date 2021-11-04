@@ -15,7 +15,7 @@ Character::Character() {
 	this->maxHealth = 0;
 	this->team = 0;
 	this->weapon = Weapon();
-	this->abilitiesList	= Abilities();
+	this->ability = Abilities();
 	this->statusDuration = 0;
 }
 
@@ -31,11 +31,11 @@ Character::Character(const Character& c)
 	health = c.maxHealth;
 	team = c.team;
 	weapon = c.weapon;
-	abilitiesList = c.abilitiesList;
+	ability = c.ability;
 	statusDuration = c.statusDuration;
 }
 
-Character::Character(const GeneralTypes::Class type, const std::string name, const Weapon& weapon, const int maxShield, const int maxHealth, const int team)
+Character::Character(const GeneralTypes::Class type, const std::string name, const int maxShield, const int maxHealth, const int team)
 {
 	
 	this->type = type;
@@ -47,8 +47,8 @@ Character::Character(const GeneralTypes::Class type, const std::string name, con
 	this->team = team;
 	this->status = GeneralTypes::Status::NoStatus;
 	this->player = false;
-	this->weapon = weapon;
-	abilitiesList = Abilities();
+	this->weapon = Weapon();
+	this->ability = Abilities();
 	this->statusDuration = 0;
 }
 
@@ -101,7 +101,6 @@ void Character::applyStatus(const GeneralTypes::Status& s, const int duration)
 {
 	this->status = s;
 	this->statusDuration = duration;
-	std::cout << "applyStatus: " << std::to_string(statusDuration) << std::endl;
 }
 
 const int Character::getMaxHealth()
@@ -128,8 +127,13 @@ const bool Character::canAct()
 {
 	bool act = false;
 
+	if (this->statusDuration == 0) {
+		this->status = GeneralTypes::Status::NoStatus;
+	}
+
 	switch (this->status) {
 	case GeneralTypes::Status::NoStatus:
+	case GeneralTypes::Status::Buff:
 		act = true;
 		break;
 	case GeneralTypes::Status::Stunned:
@@ -139,10 +143,6 @@ const bool Character::canAct()
 
 	if (this->status != GeneralTypes::Status::NoStatus) {
 		this->statusDuration--;
-
-		if (this->statusDuration == 0) {
-			this->status = GeneralTypes::Status::NoStatus;
-		}
 	}
 	return act;
 }
@@ -152,24 +152,37 @@ Weapon& Character::getWeapon()
 	return this->weapon;
 }
 
-void Character::setWeapon(Weapon* weapon)
+void Character::setWeapon(Weapon* w)
 {
-	this->weapon = *weapon;
+	this->weapon = *w;
 }
 
 Abilities& Character::getAbility()
 {
-	return this->abilitiesList;
+	return this->ability;
 }
 
-void Character::addAbility(Abilities* ability)
+void Character::setAbility(Abilities* a)
 {
-	this->abilitiesList = *ability;
+	this->ability = *a;
+}
+
+bool Character::hasBuff()
+{
+		bool isSelf = false;
+
+		switch (this->getStatus()) {
+		case GeneralTypes::Status::Buff:
+			isSelf = !isSelf;
+			break;
+		}
+
+		return isSelf;
 }
 
 void Character::dcrCooldown()
 {
-	this->abilitiesList.dcrCooldown();
+	this->ability.dcrCooldown();
 }
 
 const int Character::getHealth()
@@ -219,7 +232,7 @@ void Character::heal(const int amount)
 void Character::reset()
 {
 	this->health = this->maxHealth;
-	this->abilitiesList.reset();
+	this->ability.reset();
 }
 
 const std::string Character::toString()

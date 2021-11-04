@@ -24,9 +24,9 @@ private:
 		 R"(     |_|\_\ |_| |_| |_|  \__, | |_| |_|  \__|       \/     |___/    \____/  |_|     \___|)",
 		 R"(                          __/ |                                                          )",
 		 R"(                         |___/                                                           )",
-		 R"(                [ ]  PRESS START)",
-		 R"(                [ ]     DEMO)",
-		 R"(                [ ]     CREATE)"
+		 R"(                [ ] PRESS START)",
+		 R"(                [ ] DEMO)",
+		 R"(                [ ] SETTINGS)"
 	};
 
 	const int choiceOffset = 16;

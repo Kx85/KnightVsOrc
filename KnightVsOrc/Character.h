@@ -11,7 +11,7 @@ class Character
 public:
 	Character();
 	Character(const Character &c);
-	Character(const GeneralTypes::Class type, const std::string name, const Weapon& weapon, const int shieldValue, const int health, const int team);
+	Character(const GeneralTypes::Class type, const std::string name, const int shieldValue, const int health, const int team);
 	~Character();
 
 	const GeneralTypes::Class getType();
@@ -41,8 +41,9 @@ public:
 	void setWeapon(Weapon* weapon);
 
 	Abilities& getAbility();
-	void addAbility(Abilities* ability);
+	void setAbility(Abilities* ability);
 
+	bool hasBuff();
 	void dcrCooldown();
 
 	const int getHealth();
@@ -65,7 +66,7 @@ private:
 	int maxHealth;
 	int team;
 	Weapon weapon;
-	Abilities abilitiesList;
+	Abilities ability;
 	int statusDuration;
 };
 

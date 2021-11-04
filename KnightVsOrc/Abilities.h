@@ -18,15 +18,24 @@ public:
 	~Abilities();
 
 	const std::string getName();
+	void setName(const std::string name);
 	const int getDamage();
+	void setDamage(const int damage);
 	const GeneralTypes::Status& getInflictedStatus();
-	const GeneralTypes::ModifierType getModifierType();
+	void setInflictedStatus(const GeneralTypes::Status& status);
+	const GeneralTypes::ModifierType& getModifierType();
+	void setModifierType(const GeneralTypes::ModifierType& type);
 	const int getModifier();
+	void setModifier(const int modifier);
 	const int getBaseCooldown();
 	const int getCooldown();
+	void setCooldown(const int cooldown);
 	const int getAccuracy();
+	void setAccuracy(const int accuracy);
 	const int getEffectDuration();
+	void setEffectDuration(const int duration);
 
+	bool isSelfAbility();
 	void dcrCooldown();
 	void reset();
 
@@ -35,6 +44,8 @@ public:
 	void endTurn();
 
 private:
+	void setBaseCooldown(const int baseCooldown);
+
 	std::string name;
 	int damage;
 	int damageModifier;

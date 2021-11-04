@@ -56,9 +56,19 @@ const std::string Abilities::getName()
 	return this->name;
 }
 
+void Abilities::setName(const std::string name)
+{
+	this->name = name;
+}
+
 const int Abilities::getDamage()
 {
 	return this->damage;
+}
+
+void Abilities::setDamage(const int damage)
+{
+	this->damage = damage;
 }
 
 const GeneralTypes::Status& Abilities::getInflictedStatus()
@@ -66,9 +76,19 @@ const GeneralTypes::Status& Abilities::getInflictedStatus()
 	return this->inflictedStatus;
 }
 
-const GeneralTypes::ModifierType Abilities::getModifierType()
+void Abilities::setInflictedStatus(const GeneralTypes::Status& status)
+{
+	this->inflictedStatus = status;
+}
+
+const GeneralTypes::ModifierType& Abilities::getModifierType()
 {
 	return this->modifierType;
+}
+
+void Abilities::setModifierType(const GeneralTypes::ModifierType& modifierType)
+{
+	this->modifierType = modifierType;
 }
 
 const int Abilities::getModifier()
@@ -76,9 +96,20 @@ const int Abilities::getModifier()
 	return this->damageModifier;
 }
 
+void Abilities::setModifier(const int modifier)
+{
+	this->damageModifier = modifier;
+}
+
 const int Abilities::getCooldown()
 {
 	return this->cooldown;
+}
+
+void Abilities::setCooldown(const int cooldown)
+{
+	this->cooldown = cooldown;
+	this->setBaseCooldown(cooldown);
 }
 
 const int Abilities::getAccuracy()
@@ -86,15 +117,40 @@ const int Abilities::getAccuracy()
 	return this->accuracy;
 }
 
+void Abilities::setAccuracy(const int accuracy)
+{
+	this->accuracy = accuracy;
+}
+
 const int Abilities::getEffectDuration()
 {
 	return this->effectDuration;
 }
 
+void Abilities::setEffectDuration(const int duration)
+{
+	this->effectDuration = duration;
+}
+
+bool Abilities::isSelfAbility()
+{
+	bool isSelf = false;
+
+	switch (this->getInflictedStatus()) {
+	case GeneralTypes::Status::Buff:
+		isSelf = !isSelf;
+		break;
+	}
+
+	return isSelf;
+}
+
 void Abilities::dcrCooldown()
 {
-	if (this->cooldown-- == 0)
+	if (this->cooldown == 0)
 		this->cooldown = this->baseCooldown;
+	else
+		this->cooldown--;
 }
 
 void Abilities::reset()
@@ -104,7 +160,7 @@ void Abilities::reset()
 
 const bool Abilities::isReady()
 {
-	return ((this->baseCooldown - this->cooldown) == 0 ? true : false);
+	return (this->baseCooldown == this->cooldown) ? true : false;
 }
 
 const int Abilities::getBaseCooldown()
@@ -115,4 +171,9 @@ const int Abilities::getBaseCooldown()
 void Abilities::endTurn()
 {
 	(this->baseCooldown - this->cooldown) == 0 ? this->cooldown-- : NULL;
+}
+
+void Abilities::setBaseCooldown(const int baseCooldown)
+{
+	this->baseCooldown = baseCooldown;
 }

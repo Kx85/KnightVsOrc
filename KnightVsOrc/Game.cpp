@@ -119,11 +119,17 @@ void Game::start()
 			case GeneralTypes::ViewList::FightConfirmBox:
 				processKeyFightConfirmBox();
 				break;
-			case GeneralTypes::ViewList::CreationModeWindow:
-				processKeyCreationModeWindow();
+			case GeneralTypes::ViewList::SettingsModeWindow:
+				processKeySettingsModeWindow();
 				break;
-			case GeneralTypes::ViewList::CreateWeapon:
-				processKeyCreateWeapon();
+			case GeneralTypes::ViewList::WeaponSettings:
+				processKeyWeaponSettings();
+				break;
+			case GeneralTypes::ViewList::AbilitySettings:
+				processKeyAbilitySettings();
+				break;
+			case GeneralTypes::ViewList::CharacterSettings:
+				processKeyCharacterSettings();
 				break;
 			}
 			
@@ -133,63 +139,183 @@ void Game::start()
 	}
 }
 
-void Game::processKeyCreateWeapon() {
-	switch (lastKey.wVirtualKeyCode) {
-	case VK_RETURN:
-		if (cweapon.hasMore()) {
-			cweapon.nextMenu(&customFight);
-		}
-		if (!cweapon.hasMore()) {
-			cweapon.validate(&customFight);
-			v.setContext(GeneralTypes::ViewList::CreationModeWindow);
+void Game::processKeyCharacterSettings() {
+	switch (cSettings.getAction()) {
+	case CharacterSettings::Action::Create:
+		switch (lastKey.wVirtualKeyCode) {
+		case VK_RETURN:
+			if (cSettings.hasMore()) {
+				cSettings.nextMenu(&customFight);
+			}
+			if (!cSettings.hasMore()) {
+				cSettings.validate(&customFight);
+				v.setContext(GeneralTypes::ViewList::SettingsModeWindow);
+			}
+			break;
+		case VK_BACK:
+			if (cSettings.getSelector() >= 0) {
+				cSettings.removeChar();
+			}
+			if (cSettings.getSelector() < 0) {
+				v.setContext(GeneralTypes::ViewList::SettingsModeWindow);
+			}
+			break;
+		case VK_SHIFT:
+		case VK_RSHIFT:
+			break;
+		default:
+			if (lastKey.bKeyDown)
+				cSettings.addChar(lastKey.uChar.AsciiChar);
+			break;
 		}
 		break;
-	case VK_BACK:
-		if (cweapon.getSelector() >= 0) {
-			cweapon.removeChar();
+	case CharacterSettings::Action::Delete:
+		switch (lastKey.wVirtualKeyCode) {
+		case VK_BACK:
+			v.setContext(GeneralTypes::ViewList::SettingsModeWindow);
+			break;
+		case VK_RETURN:
+			if (cSettings.canDelete()) cSettings.deleteCharacter(&customFight);
+			break;
+		case VK_UP:
+			cSettings.toggleUp();
+			break;
+		case VK_DOWN:
+			cSettings.toggleDown();
+			break;
 		}
-		if (cweapon.getSelector() < 0) {
-			v.setContext(GeneralTypes::ViewList::CreationModeWindow);
-		}
-		break;
-	case VK_SHIFT:
-	case VK_RSHIFT:
-		break;
-	default:
-		if (lastKey.bKeyDown)
-			cweapon.addChar(lastKey.uChar.AsciiChar);
-		break;
 	}
 }
 
-void Game::processKeyCreationModeWindow() {
+void Game::processKeyAbilitySettings() {
+	switch (aSettings.getAction()) {
+	case AbilitySettings::Action::Create:
+		switch (lastKey.wVirtualKeyCode) {
+		case VK_RETURN:
+			if (aSettings.hasMore()) {
+				aSettings.nextMenu(&customFight);
+			}
+			if (!aSettings.hasMore()) {
+				aSettings.validate(&customFight);
+				v.setContext(GeneralTypes::ViewList::SettingsModeWindow);
+			}
+			break;
+		case VK_BACK:
+			if (aSettings.getSelector() >= 0) {
+				aSettings.removeChar();
+			}
+			if (aSettings.getSelector() < 0) {
+				v.setContext(GeneralTypes::ViewList::SettingsModeWindow);
+			}
+			break;
+		case VK_SHIFT:
+		case VK_RSHIFT:
+			break;
+		default:
+			if (lastKey.bKeyDown)
+				aSettings.addChar(lastKey.uChar.AsciiChar);
+			break;
+		}
+		break;
+	case AbilitySettings::Action::Delete:
+		switch (lastKey.wVirtualKeyCode) {
+		case VK_BACK:
+			v.setContext(GeneralTypes::ViewList::SettingsModeWindow);
+			break;
+		case VK_RETURN:
+			if (aSettings.canDelete()) aSettings.deleteAbility(&customFight);
+			break;
+		case VK_UP:
+			aSettings.toggleUp();
+			break;
+		case VK_DOWN:
+			aSettings.toggleDown();
+			break;
+		}
+	}
+}
+
+void Game::processKeyWeaponSettings() {
+	switch (wSettings.getAction()) {
+	case WeaponSettings::Action::Create:
+		switch (lastKey.wVirtualKeyCode) {
+		case VK_RETURN:
+			if (wSettings.hasMore()) {
+				wSettings.nextMenu(&customFight);
+			}
+			if (!wSettings.hasMore()) {
+				wSettings.validate(&customFight);
+				v.setContext(GeneralTypes::ViewList::SettingsModeWindow);
+			}
+			break;
+		case VK_BACK:
+			if (wSettings.getSelector() >= 0) {
+				wSettings.removeChar();
+			}
+			if (wSettings.getSelector() < 0) {
+				v.setContext(GeneralTypes::ViewList::SettingsModeWindow);
+			}
+			break;
+		case VK_SHIFT:
+		case VK_RSHIFT:
+			break;
+		default:
+			if (lastKey.bKeyDown)
+				wSettings.addChar(lastKey.uChar.AsciiChar);
+			break;
+		}
+		break;
+	case WeaponSettings::Action::Delete:
+		switch (lastKey.wVirtualKeyCode) {
+		case VK_BACK:
+			v.setContext(GeneralTypes::ViewList::SettingsModeWindow);
+			break;
+		case VK_RETURN:
+			if (wSettings.canDelete()) wSettings.deleteWeapon(&customFight);
+			break;
+		case VK_UP:
+			wSettings.toggleUp();
+			break;
+		case VK_DOWN:
+			wSettings.toggleDown();
+			break;
+		}
+	}
+}
+
+void Game::processKeySettingsModeWindow() {
 	switch (lastKey.wVirtualKeyCode) {
 	case VK_RETURN:
-		if (cmode.getChoice() == 0) {
-			v.setContext(GeneralTypes::ViewList::CreateWeapon);
-			cweapon.reset();
-		}
-		else if (cmode.getChoice() == 1) {
-
-		}
-		else if (cmode.getChoice() == 2) {
-
-		}
-		else if (cmode.getChoice() == 3) {
-
-		}
-		else if (cmode.getChoice() == 4) {
-
+		if (!settings.hasNextMenu()) {
+			switch (settings.getLastSelected()) {
+			case SettingsModeWindow::MenuOptions::Weapons:
+				v.setContext(GeneralTypes::ViewList::WeaponSettings);
+				wSettings.setAction(WeaponSettings::Action(settings.getChoice()));
+				wSettings.reset(&customFight);
+				break;
+			case SettingsModeWindow::MenuOptions::Abilities:
+				v.setContext(GeneralTypes::ViewList::AbilitySettings);
+				aSettings.setAction(AbilitySettings::Action(settings.getChoice()));
+				aSettings.reset(&customFight);
+				break;
+			case SettingsModeWindow::MenuOptions::Characters:
+				v.setContext(GeneralTypes::ViewList::CharacterSettings);
+				cSettings.setAction(CharacterSettings::Action(settings.getChoice()));
+				cSettings.reset(&customFight);
+				break;
+			}
 		}
 		break;
 	case VK_LEFT:
-		cmode.toggleLeftChoice();
+		settings.toggleLeftChoice();
 		break;
 	case VK_RIGHT:
-		cmode.toggleRightChoice();
+		settings.toggleRightChoice();
 		break;
 	case VK_BACK:
-		v.setContext(GeneralTypes::ViewList::TitleScreen);
+		if (!settings.hasPreviousMenu()) {
+			v.setContext(GeneralTypes::ViewList::TitleScreen);
+		}
 		break;
 	}
 }
@@ -286,7 +412,7 @@ void Game::processKeyTitleScreen() {
 			std::cout << "Changing view to Demo" << std::endl;
 		}
 		else if (ts.getChoice() == 2) {
-			v.setContext(GeneralTypes::ViewList::CreationModeWindow);
+			v.setContext(GeneralTypes::ViewList::SettingsModeWindow);
 		}
 		break;
 	case VK_DOWN:
@@ -332,11 +458,17 @@ void Game::update()
 	case GeneralTypes::ViewList::FightConfirmBox:
 		v.render(exitBox.getTextToDisplay());
 		break;
-	case GeneralTypes::ViewList::CreationModeWindow:
-		v.render(cmode.getTextToDisplay());
+	case GeneralTypes::ViewList::SettingsModeWindow:
+		v.render(settings.getTextToDisplay());
 		break;
-	case GeneralTypes::ViewList::CreateWeapon:
-		v.render(cweapon.getTextToDisplay());
+	case GeneralTypes::ViewList::WeaponSettings:
+		v.render(wSettings.getTextToDisplay());
+		break;
+	case GeneralTypes::ViewList::AbilitySettings:
+		v.render(aSettings.getTextToDisplay());
+		break;
+	case GeneralTypes::ViewList::CharacterSettings:
+		v.render(cSettings.getTextToDisplay());
 		break;
 	default:
 		v.render(" ");
