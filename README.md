@@ -7,6 +7,7 @@
 Arrow keys: Menu navigation  
 Enter     : Selection/Validation  
 Backspace : Return  
+Scroll    : Navigate rounds recap
 </pre>
 
 ## Title Screen:
@@ -17,7 +18,7 @@ Press Start => Allows to enter the fight customisation
   - Handwritten stats are : Hp, Shield, Weapon used (no restriction) and bind an ability  
 
 When a fight ends, you will be prompted to go back to the main menu or to start a new fight with the same fighters  
-
+  
 Demo => Starts the basic demo with:  
   - Knight using a sword (5 damage) with 20/50 hp/shield and with a charge (60% accuracy) ability  
   - Orc using an axe (8 damage) with 80 hp and with a stun (20% accuracy) ability  
