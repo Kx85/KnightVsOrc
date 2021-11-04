@@ -3,8 +3,11 @@
 
 ## Global use: 
 
-Press Arrow keys to navigate the menu
-Press Start to validate a choice
+<pre>
+Arrow keys: Menu navigation  
+Enter     : Selection/Validation  
+Backspace : Return  
+</pre>
 
 ## Title Screen:
 
@@ -21,6 +24,16 @@ Demo => Starts the basic demo with:
 	
 When a demo ends, you will be prompted to go back to the main menu or to start a new demo  
 
+Settings => Allow to enter the Weapon, Abilities and Characters customisation:  
+  - Abilities: Possibility to create a new Ability or delete an existing one  
+  - Weapons: Possibility to create a new Weapon or delete an existing one  
+  - Character: Possibility to create a new Character or delete an existing one  
+
+When deleting an element, no prompt will be given. Game will not be broken as you can't delete the following existing objects.  
+When creating an element, you will be given some information on whether the element already exists or not  
+On character creation, using a class different than "Custom" will fetch the class specifications as specified below
+  
+Note this is solo work and some bugs could still be present.  
 
 ## Weapons
 

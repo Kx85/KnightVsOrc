@@ -33,7 +33,7 @@ private:
 	void resetSelection(MenuOptions menu);
 
 	std::vector<std::string> modes{
-		R"(     [ ] WEAPONS                [ ] ABILITIES               [ ] CHARACTERS            [ ] SAVE          [ ] LOAD)",
+		R"(                   [ ] WEAPONS                [ ] ABILITIES               [ ] CHARACTERS)",
 		R"(                                [ ] CREATE WEAPON           [ ] DELETE WEAPON)",
 		R"(                                [ ] CREATE ABILITY          [ ] DELETE ABILITY)",
 		R"(                                [ ] CREATE CHARACTER        [ ] DELETE CHARACTER)"
