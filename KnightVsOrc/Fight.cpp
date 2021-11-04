@@ -67,53 +67,74 @@ bool hit(const int accuracy) {
 	return ((100 - accuracy) <= roll) ? true : false;
 }
 
-int processDamage(const int damage, Abilities* a) {
+int processDamage(Character* c1, bool hitAbility, bool missed) {
 	int value = 0;
-	switch (a->getModifierType()) {
-	case GeneralTypes::ModifierType::Add:
-		value = a->getDamage();
-		break;
-	case GeneralTypes::ModifierType::Mult:
-		value = damage * a->getModifier() + a->getDamage();
-		break;
-	case GeneralTypes::ModifierType::PercentInc:
-		value = a->getDamage() + damage * a->getModifier()/100;
-		break;
-	}
 
-	switch (a->getInflictedStatus()) {
-	case GeneralTypes::Status::Stunned:
-		break;
-	}
+	if (missed)
+		return 0;
 
+	if (hitAbility) {
+		switch (c1->getAbility().getModifierType()) {
+		case GeneralTypes::ModifierType::Add:
+			value = c1->getAbility().getDamage();
+			break;
+		case GeneralTypes::ModifierType::Mult:
+			value = c1->getWeapon().getDamage() * c1->getAbility().getModifier();
+			break;
+		}
+	}
+	else {
+		switch (c1->getStatus()) {
+		case GeneralTypes::Status::Buff:
+			if (c1->getAbility().getModifierType() == GeneralTypes::ModifierType::PercentInc) {
+				value = (int)std::ceil((c1->getWeapon().getDamage() * c1->getAbility().getModifier() / 100));
+			}
+			break;
+		default:
+			value = c1->getWeapon().getDamage();
+		}
+	}
 	return value;
 }
 
 std::string Fight::processAttackAndGetResult(Character* c1, Character* c2, const bool canEnd) {
 	int damage = 0;
 	std::string h = "";
+	if (hasEnded()) {
+		return "";
+	}
+
 	if (c1->canAct()) {
 		Weapon w1 = c1->getWeapon();
 		Abilities a = c1->getAbility();
-		if (a.isReady()) {
-			if (hit(a.getAccuracy())) {
-				damage = processDamage(w1.getDamage(), &a);
-				c2->takeDamage(damage);
+		bool hitAbility = false;
+		bool missed = false;
 
-				h = h + c1->getName() + " used " + a.getName() + " and dealt " + std::to_string(damage) + " damage.\n";
-				c2->applyStatus(a.getInflictedStatus(), a.getEffectDuration());
+		if (a.isReady()) {
+			hitAbility = !hitAbility;
+			if (hit(a.getAccuracy())) {
+				if (a.isSelfAbility()) {
+					c1->applyStatus(a.getInflictedStatus(), a.getEffectDuration());
+				}
+				else {
+					c2->applyStatus(a.getInflictedStatus(), a.getEffectDuration());
+				}
 			}
 			else {
+				missed = !missed;
 				h = h + c1->getName() + " used " + a.getName() + " and missed!\n";
 			}
-		}
-		else {
-			damage = w1.getDamage();
-			c2->takeDamage(damage);
+		} 
+			damage = processDamage(c1, hitAbility, missed);
 
-			h = h + c1->getName() + " attacked " + c2->getName() + " with " + w1.getName() + " and dealt " + std::to_string(damage) + " damage.\n";
-		}
-
+			if (hitAbility && !missed) {
+				h = h + c1->getName() + " used " + a.getName() + " and dealt " + std::to_string(damage) + " damage.\n";
+			}
+			else if (!missed) {
+				h = h + c1->getName() + " attacked " + c2->getName() + " with " + w1.getName() + " and dealt " + std::to_string(damage) + " damage.\n";
+			}
+		
+		c2->takeDamage(damage);
 		c1->dcrCooldown();
 	}
 	else {
@@ -136,6 +157,7 @@ std::string Fight::processAttackAndGetResult(Character* c1, Character* c2, const
 		else
 			h = h + "\nFight ends with a draw";
 	}
+
 	return h;
 }
 
